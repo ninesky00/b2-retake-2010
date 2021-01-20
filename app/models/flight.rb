@@ -7,4 +7,10 @@ class Flight < ApplicationRecord
     passengers.pluck(:name)
   end
   
+  def self.unique_passengers
+    joins(:flight_passengers, :passengers)
+    .distinct
+    .select("passengers.*, order by passengers.name")
+    .pluck("passengers.name")
+  end
 end
