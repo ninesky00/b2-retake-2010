@@ -17,24 +17,26 @@ RSpec.describe "flights index page" do
   end
 
   it "display a list of all flight numbers" do 
-    within("#flight-#{@flight1.id}") do 
+    within("#flight-information") do 
       expect(page).to have_content(1337)
-    end
-
-    within("#flight-#{@flight2.id}") do 
       expect(page).to have_content(7331)
     end
   end
 
   it "under each flight number, it display the names of all that flight's passengers" do 
-    within("#flight-#{@flight1.id}") do 
       expect(page).to have_content(@passenger1.name)
       expect(page).to have_content(@passenger2.name)
-    end
 
-    within("#flight-#{@flight2.id}") do 
       expect(page).to have_content(@passenger3.name)
       expect(page).to have_content(@passenger4.name)
+  end
+
+  it "displays a link next to each passenger name that removes the passenger from flight" do 
+    within("#passenger-#{@passenger1.id}") do 
+      expect(page).to have_link("remove passenger")
+      click_on "remove passenger"
     end
+    expect(current_path).to eq(flights_path)
+    expect(page).to_not have_content(@passenger1.name)
   end
 end
