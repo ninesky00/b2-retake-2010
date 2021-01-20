@@ -27,4 +27,14 @@ RSpec.describe Flight, type: :model do
       expect(@flight2.passenger_names).to eq(["jane", "eric"])
     end
   end
+
+  describe "class methods" do 
+    it "unique passengers" do 
+      flight3 = Flight.create!(number:1371, date:"2015-10-08", departure_city:"new york", arrival_city:"houston", airline:@delta)
+      FlightPassenger.create(flight: flight3, passenger: @passenger1)
+      FlightPassenger.create(flight: flight3, passenger: @passenger4)
+      expected = [@passenger2.name, @passenger4.name, @passenger3.name, @passenger1.name]
+      expect(@delta.flights.unique_passengers).to eq(expected)
+    end
+  end
 end
